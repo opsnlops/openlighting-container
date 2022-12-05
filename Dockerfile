@@ -36,6 +36,6 @@ RUN apt update && apt upgrade -y && apt install -y \
 
 ENV OLA_OPTS=""
 COPY --from=build /opt/ola /opt/ola
-RUN useradd -g tty olad
+RUN useradd -g dialout olad
 USER olad
 ENTRYPOINT /opt/ola/bin/olad $OLA_OPTS
