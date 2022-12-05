@@ -31,7 +31,8 @@ EXPOSE 9010
 
 # Get this image up to date
 RUN apt update && apt upgrade -y && apt install -y \
-    libmicrohttpd12 libusb-1.0-0 libprotobuf23 libftdi1-2 libavahi-client3 liblo7
+    libmicrohttpd12 libusb-1.0-0 libprotobuf23 libftdi1-2 libavahi-client3 liblo7 \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV OLA_OPTS=""
 COPY --from=build /opt/ola /opt/ola
