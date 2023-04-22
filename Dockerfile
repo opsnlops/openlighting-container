@@ -1,5 +1,5 @@
 
-FROM debian:bullseye AS build
+FROM debian:bookworm AS build
 
 # Get fully up to date
 RUN apt update && apt upgrade -y
@@ -13,25 +13,25 @@ RUN apt install -y \
     libusb-1.0-0-dev liblo-dev libavahi-client-dev python3-numpy
 
 # Add the source
-ADD https://github.com/OpenLightingProject/ola/releases/download/0.10.8/ola-0.10.8.tar.gz /ola.tar.gz
+ADD https://github.com/OpenLightingProject/ola/releases/download/0.10.9/ola-0.10.9.tar.gz /ola.tar.gz
 RUN mkdir -p /build
 RUN cd /build && tar -xvzf /ola.tar.gz
 
 # Build!
-RUN cd /build/ola-0.10.8/ && \
+RUN cd /build/ola-0.10.9/ && \
     ./configure --prefix=/opt/ola --disable-doxygen-version \
                 --disable-examples --disable-unittests --disable-python-libs && \
     make -j 4 && \
     make install
 
 
-FROM debian:bullseye-slim AS runner
+FROM debian:bookworm-slim AS runner
 EXPOSE 9090
 EXPOSE 9010
 
 # Get this image up to date
 RUN apt update && apt upgrade -y && apt install -y \
-    libmicrohttpd12 libusb-1.0-0 libprotobuf23 libftdi1-2 libavahi-client3 liblo7 \
+    libmicrohttpd12 libusb-1.0-0 libprotobuf32 libftdi1-2 libavahi-client3 liblo7 \
     && rm -rf /var/lib/apt/lists/*
 
 ENV OLA_OPTS=""
